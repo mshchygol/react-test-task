@@ -13,7 +13,9 @@ class App extends Component {
       usersData,
       cityNames: this.getCityNames(),
       companyNames: this.getCompanyNames(),
-      authorsNames: this.getAuthors()
+      authorsNames: this.getAuthors(),
+      searchQuery: '',
+      sortOptions: ['author', 'city', 'company']
     };
   }
 
@@ -58,16 +60,60 @@ class App extends Component {
   }
 
   cityFilterChangeHandler(value) {
-    let users = this.state.usersData.filter((user) => user.address.city === value);
+    let users = value !== 'none' ? usersData.filter((user) => user.address.city === value) : usersData;
     this.setState({
       usersData: users
-    }, () => {
-      console.log('hi')
     });
   }
 
-  filterChangeHandler() {
-    console.log('filter changed')
+  companyFilterChangeHandler(value) {
+    let users = value !== 'none' ? usersData.filter((user) => user.company.name === value) : usersData;
+    this.setState({
+      usersData: users
+    });
+  }
+
+  sortChangeHandler(value) {
+    let users;
+    switch (value) {
+      case 'author' :
+        users = usersData.sort((prev, next) => {
+          let textA = prev.username;
+          let textB = next.username;
+
+          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+        break;
+      case 'company' :
+        users = usersData.sort((prev, next) => {
+          let textA = prev.company.name;
+          let textB = next.company.name;
+
+          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+        break;
+      case 'city' :
+        users = usersData.sort((prev, next) => {
+          let textA = prev.address.city;
+          let textB = next.address.city;
+
+          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+        break;
+      default :
+        users = usersData;
+    }
+    this.setState({
+      usersData: users
+    });
+  }
+
+  searchQueryChange(e) {
+    e.preventDefault();
+
+    this.setState({
+      searchQuery: e.target.value
+    })
   }
 
   render() {
@@ -83,19 +129,20 @@ class App extends Component {
           <Filter
             filterLabel="Company filter:"
             options={this.state.companyNames}
-            filterChangeHandler={this.filterChangeHandler.bind(this)}
+            filterChangeHandler={this.companyFilterChangeHandler.bind(this)}
           />
-          <label>Quick search by post title <input type="text"/></label>
+          <label>Quick search by post title <input type="text" onChange={this.searchQueryChange.bind(this)}/></label>
           <hr/>
           <Filter
             filterLabel="Sort by:"
-            options={this.state.authorsNames}
-            filterChangeHandler={this.filterChangeHandler.bind(this)}
+            options={this.state.sortOptions}
+            filterChangeHandler={this.sortChangeHandler.bind(this)}
           />
         </nav>
         <PostsList
           posts={this.state.postsData}
           users={this.state.usersData}
+          searchQuery={this.state.searchQuery}
           closeHandler={this.closeClickHandler.bind(this)}
         />
       </div>

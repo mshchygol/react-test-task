@@ -80,3 +80,7 @@ button {
   height: 500px;
   overflow: scroll;
 }
+
+.capitalize:first-letter {
+  text-transform:capitalize;
+}

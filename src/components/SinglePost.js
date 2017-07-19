@@ -7,9 +7,9 @@ class SinglePost extends Component {
   render() {
     return (
       <article>
-        <h2>{this.props.title}</h2>
+        <h2 className="capitalize">{this.props.title}</h2>
         <span>{this.props.authorName}</span> - <span>{this.props.companyName}</span> - <span>{this.props.cityName}</span>
-        <p>{this.props.postBody}</p>
+        <p className="capitalize">{this.props.postBody}</p>
         <button onClick={this.handleCloseClick.bind(this)}>X</button>
       </article>
     );

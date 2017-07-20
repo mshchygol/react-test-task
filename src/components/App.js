@@ -15,7 +15,9 @@ class App extends Component {
       companyNames: this.getCompanyNames(),
       authorsNames: this.getAuthors(),
       searchQuery: '',
-      sortOptions: ['author', 'city', 'company']
+      sortOptions: ['author', 'city', 'company'],
+      companyFilter: 'none',
+      cityFilter: 'none'
     };
   }
 
@@ -53,23 +55,31 @@ class App extends Component {
   }
 
   closeClickHandler(id) {
-    let posts = this.state.postsData.filter((post) => post.id !== id);
+    let posts;
+    if (this.state.closeClicked) {
+      posts = this.state.postsList.filter((post) => post.id !== id);
+    } else {
+      posts = this.state.postsData.filter((post) => post.id !== id);
+    }
     this.setState({
-      postsData: posts
+      postsList: posts,
+      closeClicked: true
     })
   }
 
   cityFilterChangeHandler(value) {
     let users = value !== 'none' ? usersData.filter((user) => user.address.city === value) : usersData;
     this.setState({
-      usersData: users
+      usersData: users,
+      cityFilter: value
     });
   }
 
   companyFilterChangeHandler(value) {
     let users = value !== 'none' ? usersData.filter((user) => user.company.name === value) : usersData;
     this.setState({
-      usersData: users
+      usersData: users,
+      companyFilter: value
     });
   }
 
@@ -131,7 +141,7 @@ class App extends Component {
             options={this.state.companyNames}
             filterChangeHandler={this.companyFilterChangeHandler.bind(this)}
           />
-          <label>Quick search by post title <input type="text" onChange={this.searchQueryChange.bind(this)}/></label>
+          <label>Quick search by post title:<input type="text" onChange={this.searchQueryChange.bind(this)}/></label>
           <hr/>
           <Filter
             filterLabel="Sort by:"
@@ -139,8 +149,9 @@ class App extends Component {
             filterChangeHandler={this.sortChangeHandler.bind(this)}
           />
         </nav>
+        Posts list is scrollable
         <PostsList
-          posts={this.state.postsData}
+          posts={this.state.closeClicked ? this.state.postsList : this.state.postsData}
           users={this.state.usersData}
           searchQuery={this.state.searchQuery}
           closeHandler={this.closeClickHandler.bind(this)}

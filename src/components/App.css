@@ -84,3 +84,8 @@ button {
 .capitalize:first-letter {
   text-transform:capitalize;
 }
+
+select, input {
+  margin-left: 10px;
+  font-size: 14px;
+}

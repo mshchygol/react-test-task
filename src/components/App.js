@@ -13,11 +13,8 @@ class App extends Component {
       usersData,
       cityNames: this.getCityNames(),
       companyNames: this.getCompanyNames(),
-      authorsNames: this.getAuthors(),
       searchQuery: '',
-      sortOptions: ['author', 'city', 'company'],
-      companyFilter: 'none',
-      cityFilter: 'none'
+      sortOptions: ['author', 'city', 'company']
     };
   }
 
@@ -43,17 +40,6 @@ class App extends Component {
     return companyNames;
   }
 
-  getAuthors() {
-    let authors = [];
-    usersData.forEach((user) => {
-      if (authors.indexOf(user.username) === -1) {
-        authors.push(user.username)
-      }
-    });
-
-    return authors;
-  }
-
   closeClickHandler(id) {
     let posts;
     if (this.state.closeClicked) {
@@ -70,16 +56,14 @@ class App extends Component {
   cityFilterChangeHandler(value) {
     let users = value !== 'none' ? usersData.filter((user) => user.address.city === value) : usersData;
     this.setState({
-      usersData: users,
-      cityFilter: value
+      usersData: users
     });
   }
 
   companyFilterChangeHandler(value) {
     let users = value !== 'none' ? usersData.filter((user) => user.company.name === value) : usersData;
     this.setState({
-      usersData: users,
-      companyFilter: value
+      usersData: users
     });
   }
 

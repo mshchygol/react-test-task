@@ -21,7 +21,7 @@ class PostsList extends Component {
           postId={post.id}
           key={post.id}
         />;
-        if (this.props.searchQuery === -1) {
+        if (!this.props.searchQuery) {
           return singlePost
         } else if (post.title.indexOf(this.props.searchQuery) !== -1) {
           return singlePost

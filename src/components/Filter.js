@@ -15,7 +15,7 @@ class Filter extends Component {
     return (
       <label>{this.props.filterLabel}
         <select onChange={this.handleFilterChange.bind(this)}>
-          <option value="none" selected={this.props.selected}>none</option>
+          <option value="none">none</option>
           {this.getOptions()}
         </select></label>
     );
